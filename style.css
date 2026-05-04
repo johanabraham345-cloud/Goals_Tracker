@@ -1,7 +1,6 @@
 body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
 
 .task-block {
-    /* Adjusted width to ensure it fills gaps better */
     width: calc(25% - 15px); 
     min-width: 280px;
     background: rgba(255, 255, 255, 0.02);
@@ -47,7 +46,6 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: ant
 
 .task-done .progress-bar { background: #10b981; }
 
-/* Scrollbar styling for a clean look */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #18181b; border-radius: 10px; }
