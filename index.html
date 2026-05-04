@@ -3,44 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Pulse // Goals</title>
+    <title>Goals Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body class="bg-[#050505] text-zinc-300 min-h-screen">
-    <div class="max-w-lg mx-auto px-6 py-10">
-        <!-- Dashboard Header -->
-        <header class="flex justify-between items-start mb-10">
-            <div>
-                <h2 id="currentDay" class="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em] mb-1">Monday, May 5</h2>
-                <h1 class="text-3xl font-extrabold text-white tracking-tight">Daily Pulse</h1>
-            </div>
-            <div class="relative flex items-center justify-center">
-                <svg class="w-14 h-14 transform -rotate-90">
-                    <circle cx="28" cy="28" r="24" stroke="currentColor" stroke-width="4" fill="transparent" class="text-zinc-800" />
-                    <circle id="globalProgressRing" cx="28" cy="28" r="24" stroke="currentColor" stroke-width="4" fill="transparent" 
-                        stroke-dasharray="150.8" stroke-dashoffset="150.8" class="text-blue-500 transition-all duration-700 ease-out" />
-                </svg>
-                <span id="globalPercent" class="absolute text-[10px] font-black text-white">0%</span>
+    <div class="max-w-lg mx-auto px-6 py-12">
+        <!-- Main Header -->
+        <header class="mb-10">
+            <h1 class="text-4xl font-extrabold text-white tracking-tighter mb-2">Goals Tracker</h1>
+            <div class="flex justify-between items-end">
+                <div>
+                    <p id="currentDay" class="text-blue-500 text-xs font-bold uppercase tracking-[0.2em] mb-3">Monday, May 5</p>
+                    <p id="motivationText" class="text-zinc-500 text-sm italic max-w-[280px] leading-relaxed">Loading focus...</p>
+                </div>
+                <div class="relative flex items-center justify-center">
+                    <svg class="w-16 h-16 transform -rotate-90">
+                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3" fill="transparent" class="text-zinc-900" />
+                        <circle id="globalProgressRing" cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3" fill="transparent" 
+                            stroke-dasharray="175.9" stroke-dashoffset="175.9" class="text-blue-500 transition-all duration-1000 ease-in-out" />
+                    </svg>
+                    <span id="globalPercent" class="absolute text-xs font-black text-white">0%</span>
+                </div>
             </div>
         </header>
 
-        <!-- Input Section -->
-        <div class="mb-8 group">
-            <form id="goalForm" class="relative">
-                <input type="text" id="goalName" placeholder="Add a new task..." required 
-                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl py-4 pl-5 pr-32 outline-none focus:border-blue-500/50 focus:bg-zinc-900 transition-all text-sm">
+        <!-- Quick Add -->
+        <div class="mb-8">
+            <form id="goalForm" class="relative group">
+                <input type="text" id="goalName" placeholder="Define next objective..." required 
+                    class="w-full bg-zinc-900/40 border border-zinc-800/50 rounded-2xl py-4 pl-5 pr-36 outline-none focus:border-blue-500/40 focus:bg-zinc-900/80 transition-all text-sm text-white">
                 <div class="absolute right-2 top-2 bottom-2 flex gap-1">
-                    <input type="number" id="goalTime" placeholder="Mins" required class="w-16 bg-zinc-800 border-none rounded-xl px-2 text-xs text-center outline-none">
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 rounded-xl text-[10px] font-bold uppercase tracking-wider">Add</button>
+                    <input type="number" id="goalTime" placeholder="Mins" required class="w-16 bg-zinc-800/50 border-none rounded-xl px-2 text-xs text-center outline-none text-white">
+                    <button type="submit" class="bg-white text-black hover:bg-zinc-200 px-4 rounded-xl text-[10px] font-black uppercase tracking-wider transition-transform active:scale-95">Add</button>
                 </div>
             </form>
         </div>
 
-        <!-- Task Column -->
-        <div id="goalsContainer" class="space-y-2"></div>
+        <!-- Task List -->
+        <div id="goalsContainer" class="space-y-3"></div>
     </div>
 
     <script src="script.js"></script>
