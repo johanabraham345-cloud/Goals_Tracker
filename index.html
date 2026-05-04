@@ -10,16 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body class="bg-[#050505] text-zinc-300 min-h-screen">
-    <div class="w-full px-10 py-8">
+    <div class="w-full px-10 pt-4 pb-8"> <!-- Tightened top padding -->
         <!-- Dashboard Header -->
-        <header class="flex justify-between items-start mb-1">
+        <header class="flex justify-between items-start -mb-2"> <!-- Negative margin to pull input up -->
             <div>
-                <h1 class="text-6xl font-extrabold text-white tracking-tighter mb-1">Goals Tracker</h1>
-                <p id="currentDay" class="text-blue-500 text-lg font-bold uppercase tracking-[0.2em]">Tuesday, May 5</p>
+                <h1 class="text-6xl font-extrabold text-white tracking-tighter mb-0">Goals Tracker</h1>
+                <p id="currentDay" class="text-blue-500 text-lg font-bold uppercase tracking-[0.2em] -mt-1">Tuesday, May 5</p>
             </div>
             
             <div class="flex flex-col items-center">
-                <div class="relative flex items-center justify-center mb-4">
+                <div class="relative flex items-center justify-center mb-2">
                     <svg class="w-32 h-32 transform -rotate-90">
                         <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="5" fill="transparent" class="text-zinc-900" />
                         <circle id="globalProgressRing" cx="64" cy="64" r="58" stroke="currentColor" stroke-width="5" fill="transparent" 
@@ -31,7 +31,7 @@
             </div>
         </header>
 
-        <!-- Compact Quick Add -->
+        <!-- Ultra Compact Quick Add -->
         <div class="mb-8">
             <form id="goalForm" class="relative max-w-md group">
                 <input type="text" id="goalName" placeholder="Define mission..." required 
@@ -43,7 +43,7 @@
             </form>
         </div>
 
-        <!-- Task Grid (Full Width Wrap) -->
+        <!-- Task Grid -->
         <div id="goalsContainer" class="flex flex-wrap gap-5 justify-start"></div>
     </div>
 
