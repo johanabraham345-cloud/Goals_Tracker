@@ -7,16 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Added SortableJS for dragging -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body class="bg-[#050505] text-zinc-300 min-h-screen">
     <div class="w-full px-10 pt-4 pb-8">
-        <!-- Dashboard Header -->
         <header class="flex justify-between items-start mb-0">
             <div>
-                <!-- Increased margin here for space between Title and Date -->
                 <h1 class="text-6xl font-extrabold text-white tracking-tighter mb-8">Goals Tracker</h1>
-                <!-- Zero margin here to prep for the input box -->
                 <p id="currentDay" class="text-blue-500 text-lg font-bold uppercase tracking-[0.2em] mb-0">Tuesday, May 5</p>
             </div>
             
@@ -33,8 +32,7 @@
             </div>
         </header>
 
-        <!-- Shrunken Gap Input Area -->
-        <div class="mb-10 -mt-2"> <!-- Negative top margin to pull input right up to the date -->
+        <div class="mb-10 -mt-2">
             <form id="goalForm" class="relative max-w-md group">
                 <input type="text" id="goalName" placeholder="Define mission..." required 
                     class="w-full bg-zinc-900/40 border border-zinc-800/50 rounded-xl py-4 pl-5 pr-40 outline-none focus:border-blue-500/40 focus:bg-zinc-900/80 transition-all text-sm text-white">
@@ -45,10 +43,8 @@
             </form>
         </div>
 
-        <!-- Task Grid -->
         <div id="goalsContainer" class="flex flex-wrap gap-5 justify-start"></div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
