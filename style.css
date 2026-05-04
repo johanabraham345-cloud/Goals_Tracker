@@ -1,64 +1,25 @@
-body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-}
+body { font-family: 'Plus Jakarta Sans', sans-serif; }
 
 .goal-card {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.goal-card:hover {
-    border-color: rgba(59, 130, 246, 0.5);
-    background: rgba(255, 255, 255, 0.04);
+    transition: all 0.3s ease;
 }
 
 .completed-style {
-    background: rgba(16, 185, 129, 0.03);
-    border-color: rgba(16, 185, 129, 0.2);
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.3);
 }
 
-progress {
-    appearance: none;
-    height: 6px;
+progress { appearance: none; height: 8px; width: 100%; }
+progress::-webkit-progress-bar { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+progress::-webkit-progress-value { 
+    background: #3b82f6; 
+    border-radius: 10px; 
+    transition: width 0.4s ease;
 }
+.completed-style progress::-webkit-progress-value { background: #10b981; }
 
-progress::-webkit-progress-bar {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-}
-
-progress::-webkit-progress-value {
-    background: #3b82f6;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
-}
-
-.goal-card.completed-style progress::-webkit-progress-value {
-    background: #10b981;
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
-}
-
-/* Custom Range Slider Styling */
-input[type=range] {
-    -webkit-appearance: none;
-    background: transparent;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-}
-
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    background: #ffffff;
-    margin-top: -6px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
+input[type=range] { -webkit-appearance: none; background: transparent; cursor: pointer; }
+input[type=range]::-webkit-slider-runnable-track { background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: white; margin-top: -6px; }
