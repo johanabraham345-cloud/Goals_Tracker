@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumo Goals | Focus Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#030712] text-slate-200 min-h-screen selection:bg-blue-500/30">
+    <div id="app" class="max-w-xl mx-auto px-6 py-12">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <h1 class="text-2xl font-extrabold tracking-tight text-white">Lumo Goals</h1>
+                <p class="text-slate-500 text-sm">Track your progress in real-time.</p>
+            </div>
+            <button id="addGoalBtn" class="bg-white text-black hover:bg-slate-200 px-5 py-2.5 rounded-full font-semibold transition-all flex items-center gap-2 text-sm shadow-lg shadow-white/5">
+                <i data-lucide="plus" class="w-4 h-4"></i> Create Goal
+            </button>
+        </header>
+
+        <!-- Goals Grid -->
+        <div id="goalsContainer" class="grid gap-4">
+            <!-- Goals injected here -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-6">
+        <div class="bg-[#111827] w-full max-w-sm rounded-3xl p-8 border border-white/10 shadow-2xl">
+            <h2 id="modalTitle" class="text-xl font-bold mb-6 text-white text-center">New Goal</h2>
+            <form id="goalForm" class="space-y-5">
+                <input type="hidden" id="goalId">
+                <div class="space-y-2">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Goal Name</label>
+                    <input type="text" id="goalName" placeholder="e.g. 3D Modeling" required class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none text-white transition-all">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Target (Minutes)</label>
+                    <input type="number" id="goalTime" placeholder="60" required class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none text-white transition-all">
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="button" id="closeModal" class="flex-1 px-4 py-3 rounded-xl bg-transparent hover:bg-white/5 text-slate-400 transition-all font-medium">Cancel</button>
+                    <button type="submit" class="flex-1 px-4 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all shadow-lg shadow-blue-600/20">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>
