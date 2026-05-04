@@ -13,11 +13,23 @@ const motivations = [
     "Don't wish for it, work for it.", "Outwork your potential."
 ];
 
-// Consistent Key ensures data persistence
-let state = JSON.parse(localStorage.getItem('goals_tracker_v8')) || {
+// Consistent key for persistent storage
+let state = JSON.parse(localStorage.getItem('goals_tracker_v10')) || {
     date: new Date().toLocaleDateString(),
     tasks: []
 };
+
+// Initialize Drag-and-Drop
+const sortable = new Sortable(goalsContainer, {
+    animation: 200,
+    ghostClass: 'sortable-ghost',
+    onEnd: function() {
+        // Sync the internal state with the new visual order
+        const newOrderIds = Array.from(goalsContainer.querySelectorAll('.task-block')).map(el => el.dataset.id);
+        state.tasks.sort((a, b) => newOrderIds.indexOf(a.id) - newOrderIds.indexOf(b.id));
+        save(false); // Silent save without re-render to keep the drag smooth
+    }
+});
 
 function init() {
     checkDailyReset();
@@ -32,7 +44,6 @@ function setMotivation() {
 
 function checkDailyReset() {
     const today = new Date().toLocaleDateString();
-    // Only reset the 'current' progress if the date has changed
     if (state.date !== today) {
         state.tasks.forEach(t => t.current = 0);
         state.date = today;
@@ -45,9 +56,9 @@ function formatTime(mins) {
     return `${(mins / 60).toFixed(1)}H`;
 }
 
-function save() {
-    localStorage.setItem('goals_tracker_v8', JSON.stringify(state));
-    render();
+function save(shouldRender = true) {
+    localStorage.setItem('goals_tracker_v10', JSON.stringify(state));
+    if (shouldRender) render();
 }
 
 function render() {
@@ -64,6 +75,7 @@ function render() {
 
         const div = document.createElement('div');
         div.className = `task-block flex flex-col justify-between ${isDone ? 'task-done' : ''}`;
+        div.setAttribute('data-id', task.id);
         
         div.innerHTML = `
             <div class="flex justify-between items-start mb-4">
@@ -96,7 +108,6 @@ function render() {
     });
 
     const avgProgress = state.tasks.length ? Math.round(totalProgress / state.tasks.length) : 0;
-    // Updated circumference for the larger ring (r=58)
     const offset = 364.4 - (364.4 * avgProgress) / 100;
     progressRing.style.strokeDashoffset = offset;
     globalPercentText.innerText = `${avgProgress}%`;
