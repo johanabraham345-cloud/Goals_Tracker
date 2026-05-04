@@ -10,28 +10,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body class="bg-[#050505] text-zinc-300 min-h-screen">
-    <div class="w-full px-10 py-10">
+    <div class="w-full px-10 py-8"> <!-- Reduced top padding -->
         <!-- Dashboard Header -->
-        <header class="flex justify-between items-start mb-8">
+        <header class="flex justify-between items-start mb-4"> <!-- Heavily reduced bottom margin -->
             <div>
                 <h1 class="text-6xl font-extrabold text-white tracking-tighter mb-1">Goals Tracker</h1>
                 <p id="currentDay" class="text-blue-500 text-lg font-bold uppercase tracking-[0.2em]">Tuesday, May 5</p>
             </div>
             
             <div class="flex flex-col items-center">
-                <div class="relative flex items-center justify-center mb-3">
-                    <svg class="w-24 h-24 transform -rotate-90">
-                        <circle cx="48" cy="48" r="42" stroke="currentColor" stroke-width="4" fill="transparent" class="text-zinc-900" />
-                        <circle id="globalProgressRing" cx="48" cy="48" r="42" stroke="currentColor" stroke-width="4" fill="transparent" 
-                            stroke-dasharray="263.9" stroke-dashoffset="263.9" class="text-blue-500 transition-all duration-1000 ease-in-out" />
+                <div class="relative flex items-center justify-center mb-4">
+                    <!-- Scaled up the ring -->
+                    <svg class="w-32 h-32 transform -rotate-90">
+                        <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="5" fill="transparent" class="text-zinc-900" />
+                        <circle id="globalProgressRing" cx="64" cy="64" r="58" stroke="currentColor" stroke-width="5" fill="transparent" 
+                            stroke-dasharray="364.4" stroke-dashoffset="364.4" class="text-blue-500 transition-all duration-1000 ease-in-out" />
                     </svg>
-                    <span id="globalPercent" class="absolute text-xl font-black text-white">0%</span>
+                    <span id="globalPercent" class="absolute text-3xl font-black text-white">0%</span>
                 </div>
-                <p id="motivationText" class="text-zinc-300 text-base italic text-center max-w-[240px] leading-relaxed font-semibold">"Execution is everything."</p>
+                <!-- Scaled up Motivation -->
+                <p id="motivationText" class="text-zinc-200 text-lg italic text-center max-w-[280px] leading-relaxed font-semibold">"Execution is everything."</p>
             </div>
         </header>
 
-        <!-- Shrunken Quick Add -->
+        <!-- Compact Quick Add -->
         <div class="mb-10">
             <form id="goalForm" class="relative max-w-md group">
                 <input type="text" id="goalName" placeholder="Define mission..." required 
@@ -44,9 +46,7 @@
         </div>
 
         <!-- Task Grid (Full Width Wrap) -->
-        <div id="goalsContainer" class="flex flex-wrap gap-5 justify-start">
-            <!-- Tasks fill the screen width before going down -->
-        </div>
+        <div id="goalsContainer" class="flex flex-wrap gap-5 justify-start"></div>
     </div>
 
     <script src="script.js"></script>
