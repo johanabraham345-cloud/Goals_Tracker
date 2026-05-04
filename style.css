@@ -1,12 +1,14 @@
 body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
 
 .task-block {
-    width: 320px; /* Original compact width */
+    /* Adjusted width to ensure it fills gaps better */
+    width: calc(25% - 15px); 
+    min-width: 280px;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 18px;
+    padding: 18px;
     position: relative;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
@@ -15,7 +17,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: ant
 .task-block:hover {
     border-color: rgba(255, 255, 255, 0.15);
     background: rgba(255, 255, 255, 0.04);
-    transform: translateY(-5px);
+    transform: translateY(-4px);
 }
 
 .task-done {
@@ -45,4 +47,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: ant
 
 .task-done .progress-bar { background: #10b981; }
 
-input[type="number"]::-webkit-inner-spin-button { display: none; }
+/* Scrollbar styling for a clean look */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #18181b; border-radius: 10px; }
