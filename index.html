@@ -9,41 +9,46 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="bg-[#050505] text-zinc-300 min-h-screen">
-    <div class="max-w-lg mx-auto px-6 py-12">
+<body class="bg-[#050505] text-zinc-300 min-h-screen overflow-hidden">
+    <div class="h-screen flex flex-col px-8 py-12">
         <!-- Main Header -->
-        <header class="mb-10">
-            <h1 class="text-4xl font-extrabold text-white tracking-tighter mb-2">Goals Tracker</h1>
-            <div class="flex justify-between items-end">
-                <div>
-                    <p id="currentDay" class="text-blue-500 text-xs font-bold uppercase tracking-[0.2em] mb-3">Monday, May 5</p>
-                    <p id="motivationText" class="text-zinc-500 text-sm italic max-w-[280px] leading-relaxed">Loading focus...</p>
-                </div>
-                <div class="relative flex items-center justify-center">
-                    <svg class="w-16 h-16 transform -rotate-90">
-                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3" fill="transparent" class="text-zinc-900" />
-                        <circle id="globalProgressRing" cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3" fill="transparent" 
-                            stroke-dasharray="175.9" stroke-dashoffset="175.9" class="text-blue-500 transition-all duration-1000 ease-in-out" />
+        <header class="flex justify-between items-start mb-12 flex-shrink-0">
+            <div>
+                <h1 class="text-5xl font-extrabold text-white tracking-tighter mb-4">Goals Tracker</h1>
+                <p id="currentDay" class="text-blue-500 text-lg font-bold uppercase tracking-[0.2em]">Monday, May 5</p>
+            </div>
+            
+            <div class="flex flex-col items-center">
+                <div class="relative flex items-center justify-center mb-4">
+                    <svg class="w-24 h-24 transform -rotate-90">
+                        <circle cx="48" cy="48" r="42" stroke="currentColor" stroke-width="4" fill="transparent" class="text-zinc-900" />
+                        <circle id="globalProgressRing" cx="48" cy="48" r="42" stroke="currentColor" stroke-width="4" fill="transparent" 
+                            stroke-dasharray="263.9" stroke-dashoffset="263.9" class="text-blue-500 transition-all duration-1000 ease-in-out" />
                     </svg>
-                    <span id="globalPercent" class="absolute text-xs font-black text-white">0%</span>
+                    <span id="globalPercent" class="absolute text-xl font-black text-white">0%</span>
                 </div>
+                <p id="motivationText" class="text-zinc-500 text-xs italic text-center max-w-[180px] leading-relaxed">"Execution is everything."</p>
             </div>
         </header>
 
         <!-- Quick Add -->
-        <div class="mb-8">
-            <form id="goalForm" class="relative group">
-                <input type="text" id="goalName" placeholder="Define next objective..." required 
-                    class="w-full bg-zinc-900/40 border border-zinc-800/50 rounded-2xl py-4 pl-5 pr-36 outline-none focus:border-blue-500/40 focus:bg-zinc-900/80 transition-all text-sm text-white">
+        <div class="mb-10 flex-shrink-0">
+            <form id="goalForm" class="relative max-w-lg group">
+                <input type="text" id="goalName" placeholder="Define mission..." required 
+                    class="w-full bg-zinc-900/40 border border-zinc-800/50 rounded-2xl py-5 pl-6 pr-40 outline-none focus:border-blue-500/40 focus:bg-zinc-900/80 transition-all text-base text-white">
                 <div class="absolute right-2 top-2 bottom-2 flex gap-1">
-                    <input type="number" id="goalTime" placeholder="Mins" required class="w-16 bg-zinc-800/50 border-none rounded-xl px-2 text-xs text-center outline-none text-white">
-                    <button type="submit" class="bg-white text-black hover:bg-zinc-200 px-4 rounded-xl text-[10px] font-black uppercase tracking-wider transition-transform active:scale-95">Add</button>
+                    <input type="number" id="goalTime" placeholder="Mins" required class="w-20 bg-zinc-800/50 border-none rounded-xl px-2 text-sm text-center outline-none text-white font-bold">
+                    <button type="submit" class="bg-white text-black hover:bg-zinc-200 px-6 rounded-xl text-xs font-black uppercase tracking-wider">Add</button>
                 </div>
             </form>
         </div>
 
-        <!-- Task List -->
-        <div id="goalsContainer" class="space-y-3"></div>
+        <!-- Task Horizon (Horizontal Scroll) -->
+        <div class="flex-grow overflow-hidden relative">
+            <div id="goalsContainer" class="flex gap-6 h-full overflow-x-auto pb-8 snap-x">
+                <!-- Task Cards will scroll to the right -->
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
