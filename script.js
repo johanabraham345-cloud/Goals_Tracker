@@ -1,113 +1,121 @@
 const goalsContainer = document.getElementById('goalsContainer');
 const goalForm = document.getElementById('goalForm');
-const modal = document.getElementById('modal');
-const addGoalBtn = document.getElementById('addGoalBtn');
-const closeModal = document.getElementById('closeModal');
+const progressRing = document.getElementById('globalProgressRing');
+const globalPercentText = document.getElementById('globalPercent');
+const currentDayText = document.getElementById('currentDay');
 
-let goals = JSON.parse(localStorage.getItem('lumo_v2')) || [];
+let state = JSON.parse(localStorage.getItem('daily_pulse_v3')) || {
+    date: new Date().toLocaleDateString(),
+    tasks: []
+};
+
+// Check for Daily Reset
+function checkDailyReset() {
+    const today = new Date().toLocaleDateString();
+    if (state.date !== today) {
+        // Reset progress but keep task names/targets
+        state.tasks.forEach(t => t.current = 0);
+        state.date = today;
+        save();
+    }
+}
 
 function save() {
-    localStorage.setItem('lumo_v2', JSON.stringify(goals));
+    localStorage.setItem('daily_pulse_v3', JSON.stringify(state));
     render();
 }
 
 function render() {
-    goalsContainer.innerHTML = '';
+    checkDailyReset();
     
-    if (goals.length === 0) {
-        goalsContainer.innerHTML = `
-            <div class="py-20 text-center text-slate-600 font-medium italic animate-pulse">
-                No active missions.
-            </div>
-        `;
-    }
+    // Set Header Date
+    const options = { weekday: 'long', month: 'long', day: 'numeric' };
+    currentDayText.innerText = new Date().toLocaleDateString('en-US', options);
 
-    goals.forEach((goal) => {
-        const isComplete = goal.current >= goal.target;
-        const percentage = Math.min((goal.current / goal.target) * 100, 100);
-        
+    goalsContainer.innerHTML = '';
+    let totalProgress = 0;
+
+    state.tasks.forEach((task) => {
+        const isDone = task.current >= task.target;
+        const percent = Math.min((task.current / task.target) * 100, 100);
+        totalProgress += percent;
+
         const div = document.createElement('div');
-        div.className = `goal-card p-8 group ${isComplete ? 'completed-card' : ''}`;
+        div.className = `task-row relative group flex items-center justify-between p-4 rounded-2xl overflow-hidden ${isDone ? 'task-done' : ''}`;
         
         div.innerHTML = `
-            <div class="flex justify-between items-start mb-6">
+            <div class="flex items-center gap-4 z-10">
+                <button onclick="toggleQuickFinish('${task.id}')" class="w-5 h-5 rounded-md border-2 border-zinc-700 flex items-center justify-center transition-all ${isDone ? 'bg-emerald-500 border-emerald-500' : 'hover:border-zinc-500'}">
+                    ${isDone ? '<i data-lucide="check" class="w-3 h-3 text-black stroke-[4]"></i>' : ''}
+                </button>
                 <div>
-                    <h3 class="text-xl font-bold text-white tracking-tight">${goal.name}</h3>
-                    <div class="flex items-center gap-3 mt-1">
-                        <span class="text-[10px] font-black text-blue-500 uppercase tracking-widest">
-                            ${goal.current} / ${goal.target} MINS
-                        </span>
-                        ${isComplete ? '<span class="w-1 h-1 rounded-full bg-emerald-500"></span><span class="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Verified</span>' : ''}
-                    </div>
+                    <h3 class="text-sm font-semibold transition-all">${task.name}</h3>
+                    <p class="text-[10px] text-zinc-500 font-medium uppercase tracking-tight">${task.current} / ${task.target}m</p>
                 </div>
-                <button onclick="deleteGoal('${goal.id}')" class="p-2 opacity-0 group-hover:opacity-100 transition-all text-slate-500 hover:text-red-500">
-                    <i data-lucide="x" class="w-5 h-5"></i>
+            </div>
+
+            <div class="flex items-center gap-3 z-10">
+                <div class="relative group/input">
+                    <input type="number" value="${task.current}" 
+                        onchange="manualUpdate('${task.id}', this.value)"
+                        class="w-12 bg-zinc-900 border border-zinc-800 rounded-lg py-1 text-center text-[10px] font-bold outline-none focus:border-blue-500/50">
+                    <span class="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-black text-[9px] px-2 py-0.5 rounded opacity-0 group-hover/input:opacity-100 transition-all pointer-events-none">Update Mins</span>
+                </div>
+                <button onclick="deleteTask('${task.id}')" class="text-zinc-700 hover:text-red-500 transition-colors">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
             </div>
 
-            <div class="progress-bg mb-8">
-                <div class="progress-fill" style="width: ${percentage}%"></div>
-            </div>
-
-            <div class="flex items-center justify-between gap-4">
-                <div class="flex gap-2">
-                    <button onclick="addTime('${goal.id}', 5)" class="step-btn px-4 py-2 rounded-xl text-[10px] font-bold text-slate-300">
-                        +5 MIN
-                    </button>
-                    <button onclick="addTime('${goal.id}', 15)" class="step-btn px-4 py-2 rounded-xl text-[10px] font-bold text-slate-300">
-                        +15 MIN
-                    </button>
-                </div>
-                <button onclick="toggleComplete('${goal.id}')" 
-                    class="px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all
-                    ${isComplete ? 'bg-emerald-500 text-black' : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'}">
-                    ${isComplete ? 'Completed' : 'Finish Now'}
-                </button>
+            <div class="mini-progress">
+                <div class="mini-progress-fill" style="width: ${percent}%"></div>
             </div>
         `;
         goalsContainer.appendChild(div);
     });
+
+    // Update Global Progress
+    const avgProgress = state.tasks.length ? Math.round(totalProgress / state.tasks.length) : 0;
+    const offset = 150.8 - (150.8 * avgProgress) / 100;
+    progressRing.style.strokeDashoffset = offset;
+    globalPercentText.innerText = `${avgProgress}%`;
+
     lucide.createIcons();
 }
 
-// Logic
-window.addTime = (id, mins) => {
-    const goal = goals.find(g => g.id === id);
-    if (goal) {
-        goal.current = Math.min(goal.current + mins, goal.target);
-        save();
-    }
-};
-
-window.toggleComplete = (id) => {
-    const goal = goals.find(g => g.id === id);
-    if (goal) {
-        goal.current = (goal.current >= goal.target) ? 0 : goal.target;
-        save();
-    }
-};
-
-window.deleteGoal = (id) => {
-    goals = goals.filter(g => g.id !== id);
-    save();
-};
-
+// Actions
 goalForm.onsubmit = (e) => {
     e.preventDefault();
-    const newGoal = {
-        id: Date.now().toString(),
+    const newTask = {
+        id: crypto.randomUUID(),
         name: document.getElementById('goalName').value,
         target: parseInt(document.getElementById('goalTime').value),
         current: 0
     };
-    goals.unshift(newGoal);
+    state.tasks.unshift(newTask);
     save();
-    modal.classList.add('hidden');
     goalForm.reset();
 };
 
-addGoalBtn.onclick = () => modal.classList.remove('hidden');
-closeModal.onclick = () => modal.classList.add('hidden');
+window.manualUpdate = (id, val) => {
+    const task = state.tasks.find(t => t.id === id);
+    if (task) {
+        task.current = Math.min(Math.max(0, parseInt(val) || 0), task.target);
+        save();
+    }
+};
+
+window.toggleQuickFinish = (id) => {
+    const task = state.tasks.find(t => t.id === id);
+    if (task) {
+        task.current = (task.current >= task.target) ? 0 : task.target;
+        save();
+    }
+};
+
+window.deleteTask = (id) => {
+    state.tasks = state.tasks.filter(t => t.id !== id);
+    save();
+};
 
 // Start
 render();
