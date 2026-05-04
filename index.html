@@ -3,48 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumo Goals</title>
+    <title>Lumo // Flow</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="bg-[#030712] text-slate-200 min-h-screen">
-    <div class="max-w-xl mx-auto px-6 py-12">
-        <header class="flex justify-between items-center mb-12">
+<body class="bg-black text-white min-h-screen selection:bg-blue-500/30">
+    <div class="max-w-xl mx-auto px-6 py-16">
+        <header class="flex justify-between items-end mb-16">
             <div>
-                <h1 class="text-2xl font-extrabold tracking-tight text-white">Lumo Goals</h1>
-                <p class="text-slate-500 text-sm">Track your progress in real-time.</p>
+                <div class="flex items-center gap-2 mb-1">
+                    <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Live Tracker</span>
+                </div>
+                <h1 class="text-4xl font-extrabold tracking-tighter italic">LUMO</h1>
             </div>
-            <button id="addGoalBtn" class="bg-white text-black hover:bg-slate-200 px-5 py-2.5 rounded-full font-semibold transition-all flex items-center gap-2 text-sm">
-                <i data-lucide="plus" class="w-4 h-4"></i> Create Goal
+            <button id="addGoalBtn" class="group relative px-6 py-3 bg-white text-black rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                <span class="relative z-10 flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i> NEW GOAL
+                </span>
             </button>
         </header>
 
-        <div id="goalsContainer" class="grid gap-4"></div>
+        <div id="goalsContainer" class="space-y-6"></div>
     </div>
 
-    <!-- Modal -->
-    <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-6">
-        <div class="bg-[#111827] w-full max-w-sm rounded-3xl p-8 border border-white/10 shadow-2xl">
-            <h2 id="modalTitle" class="text-xl font-bold mb-6 text-white text-center">New Goal</h2>
-            <form id="goalForm" class="space-y-5">
-                <input type="hidden" id="goalId">
+    <!-- Modern Overlay Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/90 backdrop-blur-xl hidden z-50 flex items-center justify-center p-6">
+        <div class="bg-[#0A0A0A] w-full max-w-sm rounded-[32px] p-8 border border-white/5 shadow-2xl scale-in">
+            <h2 class="text-2xl font-bold mb-8 text-center tracking-tight">Initiate Goal</h2>
+            <form id="goalForm" class="space-y-6">
                 <div class="space-y-2">
-                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Goal Name</label>
-                    <input type="text" id="goalName" required class="w-full bg-white/5 border border-white/10 rounded-xl p-3 outline-none text-white focus:border-blue-500">
+                    <input type="text" id="goalName" placeholder="Name your mission..." required class="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 outline-none text-white focus:border-blue-500/50 transition-all placeholder:text-slate-600 font-medium">
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Target (Minutes)</label>
-                    <input type="number" id="goalTime" required class="w-full bg-white/5 border border-white/10 rounded-xl p-3 outline-none text-white focus:border-blue-500">
+                    <input type="number" id="goalTime" placeholder="Target (Mins)" required class="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 outline-none text-white focus:border-blue-500/50 transition-all placeholder:text-slate-600 font-medium">
                 </div>
                 <div class="flex gap-3 pt-4">
-                    <button type="button" id="closeModal" class="flex-1 px-4 py-3 rounded-xl text-slate-400 hover:bg-white/5">Cancel</button>
-                    <button type="submit" class="flex-1 px-4 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all">Save</button>
+                    <button type="button" id="closeModal" class="flex-1 px-4 py-4 rounded-2xl text-slate-500 font-bold hover:text-white transition-all uppercase text-xs tracking-widest">Abort</button>
+                    <button type="submit" class="flex-1 px-4 py-4 rounded-2xl bg-blue-600 text-white font-black uppercase text-xs tracking-[0.1em] shadow-lg shadow-blue-600/20">Launch</button>
                 </div>
             </form>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
