@@ -6,14 +6,14 @@ const currentDayText = document.getElementById('currentDay');
 const motivationDisplay = document.getElementById('motivationText');
 
 const motivations = [
-    "Execution is everything.", "Precision beats speed. Focus.", "Make it happen, no excuses.",
-    "Stay hungry. Stay focused.", "Small wins lead to massive results.", "Consistency is the only bridge.",
-    "Win the morning, win the day.", "Be obsessed or be average.", "One task at a time.",
-    "Results don't lie.", "Eyes on the prize.", "Act as if failure is impossible.",
-    "Progress over perfection.", "Focus is a superpower.", "Don't wish for it, work for it."
+    "Execution is everything.", "Make it happen, no excuses.", "Stay hungry. Stay focused.",
+    "Be obsessed or be average.", "Consistency is the only bridge.", "One task at a time.",
+    "Results don't lie.", "Win the morning, win the day.", "Eyes on the prize.",
+    "Progress over perfection.", "Act as if failure is impossible.", "Focus is a superpower.",
+    "Don't wish for it, work for it.", "Outwork your potential."
 ];
 
-let state = JSON.parse(localStorage.getItem('goals_tracker_v7')) || {
+let state = JSON.parse(localStorage.getItem('goals_tracker_v8')) || {
     date: new Date().toLocaleDateString(),
     tasks: []
 };
@@ -39,12 +39,12 @@ function checkDailyReset() {
 }
 
 function formatTime(mins) {
-    if (mins < 60) return `${mins}m`;
-    return `${(mins / 60).toFixed(1)}h`;
+    if (mins < 60) return `${mins}M`;
+    return `${(mins / 60).toFixed(1)}H`;
 }
 
 function save() {
-    localStorage.setItem('goals_tracker_v7', JSON.stringify(state));
+    localStorage.setItem('goals_tracker_v8', JSON.stringify(state));
     render();
 }
 
@@ -65,8 +65,8 @@ function render() {
         
         div.innerHTML = `
             <div class="flex justify-between items-start mb-4">
-                <button onclick="toggleQuickFinish('${task.id}')" class="w-7 h-7 rounded-lg border-2 border-zinc-800 flex items-center justify-center transition-all ${isDone ? 'bg-emerald-500 border-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]' : 'hover:border-blue-500'}">
-                    ${isDone ? '<i data-lucide="check" class="w-4 h-4 text-black stroke-[4]"></i>' : ''}
+                <button onclick="toggleQuickFinish('${task.id}')" class="w-6 h-6 rounded border-2 border-zinc-800 flex items-center justify-center transition-all ${isDone ? 'bg-emerald-500 border-emerald-500' : 'hover:border-blue-500'}">
+                    ${isDone ? '<i data-lucide="check" class="w-3 h-3 text-black stroke-[4]"></i>' : ''}
                 </button>
                 <button onclick="deleteTask('${task.id}')" class="text-zinc-800 hover:text-red-500 transition-colors">
                     <i data-lucide="x" class="w-4 h-4"></i>
@@ -75,15 +75,15 @@ function render() {
 
             <div class="mb-4">
                 <h3 class="text-sm font-bold text-white tracking-tight mb-1 truncate">${task.name}</h3>
-                <p class="text-[10px] text-zinc-500 font-black uppercase tracking-widest">
+                <p class="text-[9px] text-zinc-500 font-black uppercase tracking-widest">
                     ${formatTime(task.current)} / ${formatTime(task.target)}
                 </p>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
                 <input type="number" value="${task.current}" 
                     onchange="manualUpdate('${task.id}', this.value)"
-                    class="w-full bg-white/5 border border-white/10 rounded-lg py-2 text-center text-xs font-bold text-white outline-none focus:border-blue-500/50">
+                    class="w-full bg-white/5 border border-white/10 rounded-lg py-2 text-center text-[10px] font-bold text-white outline-none focus:border-blue-500/50">
             </div>
 
             <div class="progress-track">
@@ -94,8 +94,7 @@ function render() {
     });
 
     const avgProgress = state.tasks.length ? Math.round(totalProgress / state.tasks.length) : 0;
-    // Circumference for r=50 is 314.15
-    const offset = 314.15 - (314.15 * avgProgress) / 100;
+    const offset = 263.9 - (263.9 * avgProgress) / 100;
     progressRing.style.strokeDashoffset = offset;
     globalPercentText.innerText = `${avgProgress}%`;
 
