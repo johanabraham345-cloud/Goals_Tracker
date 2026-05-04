@@ -1,18 +1,21 @@
 body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
 
-.task-row {
+.task-block {
+    width: 320px; /* Original compact width */
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    border-radius: 20px;
+    padding: 20px;
     position: relative;
     overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.task-row:hover {
+.task-block:hover {
     border-color: rgba(255, 255, 255, 0.15);
     background: rgba(255, 255, 255, 0.04);
-    transform: translateX(6px);
+    transform: translateY(-5px);
 }
 
 .task-done {
@@ -23,7 +26,6 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: ant
 .task-done h3 {
     color: #52525b;
     text-decoration: line-through;
-    text-decoration-thickness: 2px;
 }
 
 .progress-track {
