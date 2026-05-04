@@ -1,16 +1,34 @@
 body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
 
-.task-row {
+/* Horizontal Scroll Styling */
+#goalsContainer {
+    scrollbar-width: thin;
+    scrollbar-color: #18181b transparent;
+}
+
+#goalsContainer::-webkit-scrollbar { height: 6px; }
+#goalsContainer::-webkit-scrollbar-thumb { background: #18181b; border-radius: 10px; }
+
+.task-card {
+    min-width: 320px; /* Fixed size cards */
+    max-width: 320px;
+    height: fit-content;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
+    border-radius: 32px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    snap-align: start;
     transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.task-row:hover {
+.task-card:hover {
     border-color: rgba(255, 255, 255, 0.15);
     background: rgba(255, 255, 255, 0.04);
-    transform: translateX(4px);
+    transform: translateY(-8px);
 }
 
 .task-done {
@@ -25,7 +43,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: ant
 }
 
 .progress-track {
-    height: 3px;
+    height: 4px;
     background: rgba(255,255,255,0.03);
     width: 100%;
     position: absolute;
@@ -37,12 +55,9 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: ant
     height: 100%;
     background: #3b82f6;
     transition: width 1s cubic-bezier(0.65, 0, 0.35, 1);
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
 }
 
-.task-done .progress-bar {
-    background: #10b981;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
-}
+.task-done .progress-bar { background: #10b981; }
 
 input[type="number"]::-webkit-inner-spin-button { display: none; }
