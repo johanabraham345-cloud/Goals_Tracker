@@ -13,6 +13,7 @@ const motivations = [
     "Don't wish for it, work for it.", "Outwork your potential."
 ];
 
+// Consistent Key ensures data persistence
 let state = JSON.parse(localStorage.getItem('goals_tracker_v8')) || {
     date: new Date().toLocaleDateString(),
     tasks: []
@@ -31,6 +32,7 @@ function setMotivation() {
 
 function checkDailyReset() {
     const today = new Date().toLocaleDateString();
+    // Only reset the 'current' progress if the date has changed
     if (state.date !== today) {
         state.tasks.forEach(t => t.current = 0);
         state.date = today;
@@ -94,7 +96,8 @@ function render() {
     });
 
     const avgProgress = state.tasks.length ? Math.round(totalProgress / state.tasks.length) : 0;
-    const offset = 263.9 - (263.9 * avgProgress) / 100;
+    // Updated circumference for the larger ring (r=58)
+    const offset = 364.4 - (364.4 * avgProgress) / 100;
     progressRing.style.strokeDashoffset = offset;
     globalPercentText.innerText = `${avgProgress}%`;
 
