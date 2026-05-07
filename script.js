@@ -1,45 +1,79 @@
+// --- CONFIGURATION ---
+const firebaseConfig = {
+    apiKey: "PASTE_YOUR_API_KEY_HERE",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// --- STATE & DOM ---
+let currentUser = null;
+let state = { tasks: [], date: new Date().toLocaleDateString() };
+
 const goalsContainer = document.getElementById('goalsContainer');
 const goalForm = document.getElementById('goalForm');
 const progressRing = document.getElementById('globalProgressRing');
 const globalPercentText = document.getElementById('globalPercent');
-const currentDayText = document.getElementById('currentDay');
 const motivationDisplay = document.getElementById('motivationText');
+const authOverlay = document.getElementById('authOverlay');
+const mainApp = document.getElementById('mainApp');
 
 const motivations = [
     "Execution is everything.", "Make it happen, no excuses.", "Stay hungry. Stay focused.",
     "Be obsessed or be average.", "Consistency is the only bridge.", "One task at a time.",
-    "Results don't lie.", "Win the morning, win the day.", "Eyes on the prize.",
-    "Progress over perfection.", "Act as if failure is impossible.", "Focus is a superpower.",
-    "Don't wish for it, work for it.", "Outwork your potential."
+    "Results don't lie.", "Win the morning, win the day.", "Focus is a superpower."
 ];
 
-// Consistent key for persistent storage
-let state = JSON.parse(localStorage.getItem('goals_tracker_v10')) || {
-    date: new Date().toLocaleDateString(),
-    tasks: []
-};
-
-// Initialize Drag-and-Drop
-const sortable = new Sortable(goalsContainer, {
-    animation: 200,
-    ghostClass: 'sortable-ghost',
-    onEnd: function() {
-        // Sync the internal state with the new visual order
-        const newOrderIds = Array.from(goalsContainer.querySelectorAll('.task-block')).map(el => el.dataset.id);
-        state.tasks.sort((a, b) => newOrderIds.indexOf(a.id) - newOrderIds.indexOf(b.id));
-        save(false); // Silent save without re-render to keep the drag smooth
+// --- AUTH HANDLERS ---
+auth.onAuthStateChanged(user => {
+    if (user) {
+        currentUser = user;
+        authOverlay.classList.add('hidden');
+        mainApp.classList.remove('hidden');
+        loadData();
+    } else {
+        currentUser = null;
+        authOverlay.classList.remove('hidden');
+        mainApp.classList.add('hidden');
     }
 });
 
-function init() {
-    checkDailyReset();
-    setMotivation();
+document.getElementById('signupBtn').onclick = () => {
+    const email = document.getElementById('authEmail').value;
+    const pass = document.getElementById('authPassword').value;
+    auth.createUserWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+};
+
+document.getElementById('loginBtn').onclick = () => {
+    const email = document.getElementById('authEmail').value;
+    const pass = document.getElementById('authPassword').value;
+    auth.signInWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+};
+
+document.getElementById('logoutBtn').onclick = () => auth.signOut();
+
+// --- DATA HANDLERS ---
+async function loadData() {
+    const doc = await db.collection('users').doc(currentUser.uid).get();
+    if (doc.exists) {
+        state = doc.data();
+        checkDailyReset();
+    }
     render();
 }
 
-function setMotivation() {
-    const randomIdx = Math.floor(Math.random() * motivations.length);
-    motivationDisplay.innerText = `"${motivations[randomIdx]}"`;
+async function save(shouldRender = true) {
+    if (currentUser) {
+        await db.collection('users').doc(currentUser.uid).set(state);
+    }
+    if (shouldRender) render();
 }
 
 function checkDailyReset() {
@@ -51,20 +85,28 @@ function checkDailyReset() {
     }
 }
 
+// --- DRAG & DROP ---
+new Sortable(goalsContainer, {
+    animation: 200,
+    ghostClass: 'sortable-ghost',
+    onEnd: function() {
+        const newOrderIds = Array.from(goalsContainer.querySelectorAll('.task-block')).map(el => el.dataset.id);
+        state.tasks.sort((a, b) => newOrderIds.indexOf(a.id) - newOrderIds.indexOf(b.id));
+        save(false);
+    }
+});
+
+// --- RENDER & ACTIONS ---
 function formatTime(mins) {
     if (mins < 60) return `${mins}M`;
     return `${(mins / 60).toFixed(1)}H`;
 }
 
-function save(shouldRender = true) {
-    localStorage.setItem('goals_tracker_v10', JSON.stringify(state));
-    if (shouldRender) render();
-}
-
 function render() {
     const options = { weekday: 'long', month: 'long', day: 'numeric' };
-    currentDayText.innerText = new Date().toLocaleDateString('en-US', options);
-
+    document.getElementById('currentDay').innerText = new Date().toLocaleDateString('en-US', options);
+    
+    motivationDisplay.innerText = `"${motivations[Math.floor(Math.random() * motivations.length)]}"`;
     goalsContainer.innerHTML = '';
     let totalProgress = 0;
 
@@ -86,43 +128,25 @@ function render() {
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
-
             <div class="mb-4">
                 <h3 class="text-sm font-bold text-white tracking-tight mb-1 truncate">${task.name}</h3>
-                <p class="text-[9px] text-zinc-500 font-black uppercase tracking-widest">
-                    ${formatTime(task.current)} / ${formatTime(task.target)}
-                </p>
+                <p class="text-[9px] text-zinc-500 font-black uppercase tracking-widest">${formatTime(task.current)} / ${formatTime(task.target)}</p>
             </div>
-
-            <div class="flex items-center gap-2">
-                <input type="number" value="${task.current}" 
-                    onchange="manualUpdate('${task.id}', this.value)"
-                    class="w-full bg-white/5 border border-white/10 rounded-lg py-2 text-center text-[10px] font-bold text-white outline-none focus:border-blue-500/50">
-            </div>
-
-            <div class="progress-track">
-                <div class="progress-bar" style="width: ${percent}%"></div>
-            </div>
+            <input type="number" value="${task.current}" onchange="manualUpdate('${task.id}', this.value)" class="w-full bg-white/5 border border-white/10 rounded-lg py-2 text-center text-[10px] font-bold text-white outline-none">
+            <div class="progress-track"><div class="progress-bar" style="width: ${percent}%"></div></div>
         `;
         goalsContainer.appendChild(div);
     });
 
     const avgProgress = state.tasks.length ? Math.round(totalProgress / state.tasks.length) : 0;
-    const offset = 364.4 - (364.4 * avgProgress) / 100;
-    progressRing.style.strokeDashoffset = offset;
+    progressRing.style.strokeDashoffset = 364.4 - (364.4 * avgProgress) / 100;
     globalPercentText.innerText = `${avgProgress}%`;
-
     lucide.createIcons();
 }
 
 goalForm.onsubmit = (e) => {
     e.preventDefault();
-    const newTask = {
-        id: crypto.randomUUID(),
-        name: document.getElementById('goalName').value,
-        target: parseInt(document.getElementById('goalTime').value),
-        current: 0
-    };
+    const newTask = { id: crypto.randomUUID(), name: document.getElementById('goalName').value, target: parseInt(document.getElementById('goalTime').value), current: 0 };
     state.tasks.unshift(newTask);
     save();
     goalForm.reset();
@@ -130,23 +154,15 @@ goalForm.onsubmit = (e) => {
 
 window.manualUpdate = (id, val) => {
     const task = state.tasks.find(t => t.id === id);
-    if (task) {
-        task.current = Math.min(Math.max(0, parseInt(val) || 0), task.target);
-        save();
-    }
+    if (task) { task.current = Math.min(Math.max(0, parseInt(val) || 0), task.target); save(); }
 };
 
 window.toggleQuickFinish = (id) => {
     const task = state.tasks.find(t => t.id === id);
-    if (task) {
-        task.current = (task.current >= task.target) ? 0 : task.target;
-        save();
-    }
+    if (task) { task.current = (task.current >= task.target) ? 0 : task.target; save(); }
 };
 
 window.deleteTask = (id) => {
     state.tasks = state.tasks.filter(t => t.id !== id);
     save();
 };
-
-init();
