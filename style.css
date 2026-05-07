@@ -58,3 +58,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: ant
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #18181b; border-radius: 10px; }
+
+#authOverlay {
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+}
+
+.hidden { display: none !important; }
+
+/* Keep all your previous .task-block, .progress-bar etc. styles here */
