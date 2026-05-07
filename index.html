@@ -3,20 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goals Tracker</title>
+    <title>Goals Tracker | Secure</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Library for Dragging -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-[#050505] text-zinc-300 min-h-screen">
-    <div class="w-full px-10 pt-4 pb-8">
-        <!-- Dashboard Header -->
+
+    <div id="authOverlay" class="fixed inset-0 z-[100] bg-black flex items-center justify-center p-6">
+        <div class="w-full max-w-md bg-zinc-900/50 border border-zinc-800 p-10 rounded-3xl backdrop-blur-xl">
+            <h2 class="text-4xl font-black text-white mb-2 tracking-tighter">Welcome back.</h2>
+            <p class="text-zinc-500 mb-8 font-medium">Your progress is now synced to the cloud.</p>
+            
+            <div class="space-y-4">
+                <input type="email" id="authEmail" placeholder="Email Address" class="w-full bg-black/50 border border-zinc-800 rounded-xl py-4 px-5 outline-none focus:border-blue-500 text-white transition-all">
+                <input type="password" id="authPassword" placeholder="Password" class="w-full bg-black/50 border border-zinc-800 rounded-xl py-4 px-5 outline-none focus:border-blue-500 text-white transition-all">
+                
+                <div class="flex gap-3 pt-4">
+                    <button id="loginBtn" class="flex-1 bg-white text-black font-black py-4 rounded-xl hover:bg-zinc-200 transition-all uppercase text-xs tracking-widest">Login</button>
+                    <button id="signupBtn" class="flex-1 bg-zinc-800 text-white font-black py-4 rounded-xl hover:bg-zinc-700 transition-all uppercase text-xs tracking-widest">Sign Up</button>
+                </div>
+            </div>
+            <p id="authError" class="text-red-500 text-xs mt-4 font-bold text-center"></p>
+        </div>
+    </div>
+
+    <div id="mainApp" class="hidden w-full px-10 pt-4 pb-8">
         <header class="flex justify-between items-start mb-0">
             <div>
-                <h1 class="text-6xl font-extrabold text-white tracking-tighter mb-8">Goals Tracker</h1>
+                <div class="flex items-center gap-4 mb-8">
+                    <h1 class="text-6xl font-extrabold text-white tracking-tighter mb-0">Goals Tracker</h1>
+                    <button id="logoutBtn" class="mt-4 text-[10px] font-black text-zinc-600 hover:text-white uppercase tracking-widest border border-zinc-900 px-3 py-1 rounded-lg transition-all">Logout</button>
+                </div>
                 <p id="currentDay" class="text-blue-500 text-lg font-bold uppercase tracking-[0.2em] mb-0">Tuesday, May 5</p>
             </div>
             
@@ -33,7 +56,6 @@
             </div>
         </header>
 
-        <!-- Tight Gap Input Area -->
         <div class="mb-10 -mt-2">
             <form id="goalForm" class="relative max-w-md group">
                 <input type="text" id="goalName" placeholder="Define mission..." required 
@@ -45,7 +67,6 @@
             </form>
         </div>
 
-        <!-- Task Grid (Draggable Container) -->
         <div id="goalsContainer" class="flex flex-wrap gap-5 justify-start"></div>
     </div>
 
