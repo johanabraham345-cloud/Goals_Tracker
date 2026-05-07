@@ -1,62 +1,20 @@
 body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
-
 #authOverlay { background: radial-gradient(circle at center, #111 0%, #000 100%); }
 .hidden { display: none !important; }
 
 .task-block {
-    width: calc(25% - 15px); 
-    min-width: 280px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 18px;
-    padding: 18px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s ease, border-color 0.4s ease;
-    cursor: grab;
+    width: calc(25% - 15px); min-width: 280px;
+    background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px); border-radius: 18px; padding: 18px;
+    position: relative; overflow: hidden; transition: 0.2s; cursor: grab;
 }
-
 .task-block:active { cursor: grabbing; }
-
-.sortable-ghost {
-    opacity: 0.2;
-    background: #3b82f6 !important;
-    border: 2px dashed #3b82f6;
-}
-
-.task-block:hover {
-    border-color: rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.04);
-}
-
-.task-done {
-    border-color: rgba(16, 185, 129, 0.2);
-    background: rgba(16, 185, 129, 0.03);
-}
-
-.task-done h3 {
-    color: #52525b;
-    text-decoration: line-through;
-}
-
-.progress-track {
-    height: 3px;
-    background: rgba(255,255,255,0.03);
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
-
-.progress-bar {
-    height: 100%;
-    background: #3b82f6;
-    transition: width 1s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
+.sortable-ghost { opacity: 0.2; background: #3b82f6 !important; border: 2px dashed #3b82f6; }
+.task-done { border-color: rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.03); }
+.task-done h3 { color: #52525b; text-decoration: line-through; }
+.progress-track { height: 3px; background: rgba(255,255,255,0.03); width: 100%; position: absolute; bottom: 0; left: 0; }
+.progress-bar { height: 100%; background: #3b82f6; transition: width 1s ease; }
 .task-done .progress-bar { background: #10b981; }
 
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #18181b; border-radius: 10px; }
